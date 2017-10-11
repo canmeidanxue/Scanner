@@ -17,7 +17,9 @@
 package com.bulesky.zxinglibrary.camera.open;
 
 /**
- * 摄像头前置还是后置
+ * Describe:相机摄像头位置
+ * Created by hsl on 2017/10/11.
+ * {@link android.hardware.Camera.CameraInfo}
  */
 public enum CameraFacing {
 

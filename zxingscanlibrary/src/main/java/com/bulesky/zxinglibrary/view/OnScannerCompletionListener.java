@@ -1,31 +1,16 @@
 package com.bulesky.zxinglibrary.view;
 
-import android.graphics.Bitmap;
-
 import com.google.zxing.Result;
-import com.google.zxing.result.ParsedResult;
 
 /**
- * Created by hupei on 2016/7/1.
+ * 结果回调
+ * Created by hsl on 2017-10-11
+ *
  */
 public interface OnScannerCompletionListener {
     /**
      * 扫描成功后将调用
-     * <pre>
-     *     ParsedResultType type = parsedResult.getType();
-     *     switch (type) {
-     *         case ADDRESSBOOK:
-     *             AddressBookParsedResult addressResult = (AddressBookParsedResult) parsedResult;
-     *         break;
-     *         case URI:
-     *              URIParsedResult uriParsedResult = (URIParsedResult) parsedResult;
-     *         break;
-     *     }
-     * </pre>
-     *
      * @param rawResult    扫描结果
-     * @param parsedResult 抽象类，结果转换成目标类型
-     * @param barcode      位图
      */
-    void OnScannerCompletion(Result rawResult, ParsedResult parsedResult, Bitmap barcode);
+    void OnScannerCompletion(Result rawResult);
 }

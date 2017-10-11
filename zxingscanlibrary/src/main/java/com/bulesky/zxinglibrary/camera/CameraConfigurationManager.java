@@ -38,14 +38,12 @@ final class CameraConfigurationManager {
     private static final int FRONT_LIGHT_MODE_ON = 0;
     private static final int FRONT_LIGHT_MODE_OFF = 1;
     private final Context context;
-    //    private int cwNeededRotation;
     private int cwRotationFromDisplayToCamera;
     // 屏幕分辨率
     private Point screenResolution;
     // 相机分辨率
     private Point cameraResolution;
     private Point bestPreviewSize;
-//    private Point previewSizeOnScreen;
 
     CameraConfigurationManager(Context context) {
         this.context = context;
@@ -76,7 +74,7 @@ final class CameraConfigurationManager {
                 cwRotationFromNaturalToDisplay = 270;
                 break;
             default:
-                // Have seen this return incorrect values like -90
+                // 例如 -90
                 if (displayRotation % 90 == 0) {
                     cwRotationFromNaturalToDisplay = (360 + displayRotation) % 360;
                 } else {
@@ -93,12 +91,6 @@ final class CameraConfigurationManager {
         cwRotationFromDisplayToCamera = (360 +
                 cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
 
-//        if (camera.getFacing() == CameraFacing.FRONT) {
-//            cwNeededRotation = (360 - cwRotationFromDisplayToCamera) % 360;
-//        } else {
-//            cwNeededRotation = cwRotationFromDisplayToCamera;
-//        }
-
         Point theScreenResolution = new Point();
         display.getSize(theScreenResolution);
         screenResolution = theScreenResolution;
@@ -114,15 +106,6 @@ final class CameraConfigurationManager {
                 parameters, screenResolutionForCamera);
         bestPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(
                 parameters, screenResolutionForCamera);
-
-//        boolean isScreenPortrait = screenResolution.x < screenResolution.y;
-//        boolean isPreviewSizePortrait = bestPreviewSize.x < bestPreviewSize.y;
-
-//        if (isScreenPortrait == isPreviewSizePortrait) {
-//            previewSizeOnScreen = bestPreviewSize;
-//        } else {
-//            previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
-//        }
     }
 
     /**
@@ -191,14 +174,6 @@ final class CameraConfigurationManager {
         }
     }
 
-//    Point getBestPreviewSize() {
-//        return bestPreviewSize;
-//    }
-
-//    Point getPreviewSizeOnScreen() {
-//        return previewSizeOnScreen;
-//    }
-
     Point getCameraResolution() {
         return cameraResolution;
     }
@@ -206,10 +181,6 @@ final class CameraConfigurationManager {
     Point getScreenResolution() {
         return screenResolution;
     }
-
-//    int getCWNeededRotation() {
-//        return cwNeededRotation;
-//    }
 
     boolean getTorchState(Camera camera) {
         if (camera != null) {

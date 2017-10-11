@@ -27,23 +27,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Utility methods for configuring the Android camera.
- *
- * @author Sean Owen
+ * 配置相机参数工具类
  */
 @SuppressWarnings("deprecation")
 public final class CameraConfigurationUtils {
 
     private static final String TAG = "CameraConfiguration";
 
-   // private static final Pattern SEMICOLON = Pattern.compile(";");
 
     private static final int MIN_PREVIEW_PIXELS = 480 * 320; // normal screen
     private static final float MAX_EXPOSURE_COMPENSATION = 1.5f;
     private static final float MIN_EXPOSURE_COMPENSATION = 0.0f;
     private static final double MAX_ASPECT_DISTORTION = 0.15;
-//    private static final int MIN_FPS = 10;
-//    private static final int MAX_FPS = 20;
     private static final int AREA_PER_1000 = 400;
 
     private CameraConfigurationUtils() {
@@ -129,38 +124,6 @@ public final class CameraConfigurationUtils {
         }
     }
 
-//    public static void setBestPreviewFPS(Camera.Parameters parameters) {
-//        setBestPreviewFPS(parameters, MIN_FPS, MAX_FPS);
-//    }
-
-//    public static void setBestPreviewFPS(Camera.Parameters parameters, int minFPS, int maxFPS) {
-//        List<int[]> supportedPreviewFpsRanges = parameters.getSupportedPreviewFpsRange();
-//        //Log.i(TAG, "Supported FPS ranges: " + toString(supportedPreviewFpsRanges));
-//        if (supportedPreviewFpsRanges != null && !supportedPreviewFpsRanges.isEmpty()) {
-//            int[] suitableFPSRange = null;
-//            for (int[] fpsRange : supportedPreviewFpsRanges) {
-//                int thisMin = fpsRange[Camera.Parameters.PREVIEW_FPS_MIN_INDEX];
-//                int thisMax = fpsRange[Camera.Parameters.PREVIEW_FPS_MAX_INDEX];
-//                if (thisMin >= minFPS * 1000 && thisMax <= maxFPS * 1000) {
-//                    suitableFPSRange = fpsRange;
-//                    break;
-//                }
-//            }
-//            if (suitableFPSRange == null) {
-//                Log.i(TAG, "No suitable FPS range?");
-//            } else {
-//                int[] currentFpsRange = new int[2];
-//                parameters.getPreviewFpsRange(currentFpsRange);
-//                if (Arrays.equals(currentFpsRange, suitableFPSRange)) {
-//                    Log.i(TAG, "FPS range already set to " + Arrays.toString(suitableFPSRange));
-//                } else {
-//                    Log.i(TAG, "Setting FPS range to " + Arrays.toString(suitableFPSRange));
-//                    parameters.setPreviewFpsRange(suitableFPSRange[Camera.Parameters.PREVIEW_FPS_MIN_INDEX],
-//                            suitableFPSRange[Camera.Parameters.PREVIEW_FPS_MAX_INDEX]);
-//                }
-//            }
-//        }
-//    }
 
     public static void setFocusArea(Camera.Parameters parameters) {
         if (parameters.getMaxNumFocusAreas() > 0) {
@@ -175,9 +138,7 @@ public final class CameraConfigurationUtils {
 
     public static void setMetering(Camera.Parameters parameters) {
         if (parameters.getMaxNumMeteringAreas() > 0) {
-            //Log.i(TAG, "Old metering areas: " + parameters.getMeteringAreas());
             List<Camera.Area> middleArea = buildMiddleArea(AREA_PER_1000);
-            //Log.i(TAG, "Setting metering area to : " + toString(middleArea));
             parameters.setMeteringAreas(middleArea);
         } else {
             Log.i(TAG, "Device does not support metering areas");
@@ -357,69 +318,4 @@ public final class CameraConfigurationUtils {
         Log.i(TAG, "No supported values match");
         return null;
     }
-//
-//    private static String toString(Collection<int[]> arrays) {
-//        if (arrays == null || arrays.isEmpty()) {
-//            return "[]";
-//        }
-//        StringBuilder buffer = new StringBuilder();
-//        buffer.append('[');
-//        Iterator<int[]> it = arrays.iterator();
-//        while (it.hasNext()) {
-//            buffer.append(Arrays.toString(it.next()));
-//            if (it.hasNext()) {
-//                buffer.append(", ");
-//            }
-//        }
-//        buffer.append(']');
-//        return buffer.toString();
-//    }
-//
-//    private static String toString(Iterable<Camera.Area> areas) {
-//        if (areas == null) {
-//            return null;
-//        }
-//        StringBuilder result = new StringBuilder();
-//        for (Camera.Area area : areas) {
-//            result.append(area.rect).append(':').append(area.weight).append(' ');
-//        }
-//        return result.toString();
-//    }
-
-//    public static String collectStats(Camera.Parameters parameters) {
-//        return collectStats(parameters.flatten());
-//    }
-//
-//    public static String collectStats(CharSequence flattenedParams) {
-//        StringBuilder result = new StringBuilder(1000);
-//
-//        result.append("BOARD=").append(Build.BOARD).append('\n');
-//        result.append("BRAND=").append(Build.BRAND).append('\n');
-//        result.append("CPU_ABI=").append(Build.CPU_ABI).append('\n');
-//        result.append("DEVICE=").append(Build.DEVICE).append('\n');
-//        result.append("DISPLAY=").append(Build.DISPLAY).append('\n');
-//        result.append("FINGERPRINT=").append(Build.FINGERPRINT).append('\n');
-//        result.append("HOST=").append(Build.HOST).append('\n');
-//        result.append("ID=").append(Build.ID).append('\n');
-//        result.append("MANUFACTURER=").append(Build.MANUFACTURER).append('\n');
-//        result.append("MODEL=").append(Build.MODEL).append('\n');
-//        result.append("PRODUCT=").append(Build.PRODUCT).append('\n');
-//        result.append("TAGS=").append(Build.TAGS).append('\n');
-//        result.append("TIME=").append(Build.TIME).append('\n');
-//        result.append("TYPE=").append(Build.TYPE).append('\n');
-//        result.append("USER=").append(Build.USER).append('\n');
-//        result.append("VERSION.CODENAME=").append(Build.VERSION.CODENAME).append('\n');
-//        result.append("VERSION.INCREMENTAL=").append(Build.VERSION.INCREMENTAL).append('\n');
-//        result.append("VERSION.RELEASE=").append(Build.VERSION.RELEASE).append('\n');
-//        result.append("VERSION.SDK_INT=").append(Build.VERSION.SDK_INT).append('\n');
-//
-//        if (flattenedParams != null) {
-//            String[] params = SEMICOLON.split(flattenedParams);
-//            Arrays.sort(params);
-//            for (String param : params) {
-//                result.append(param).append('\n');
-//            }
-//        }
-//        return result.toString();
-//    }
 }

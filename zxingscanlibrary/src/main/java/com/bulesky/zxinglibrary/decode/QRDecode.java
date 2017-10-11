@@ -3,9 +3,8 @@ package com.bulesky.zxinglibrary.decode;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.bulesky.zxinglibrary.view.OnScannerCompletionListener;
 import com.bulesky.zxinglibrary.camera.CameraManager;
-import com.bulesky.zxinglibrary.common.Tool;
+import com.bulesky.zxinglibrary.view.OnScannerCompletionListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 二维码解码
  * Update by hsl on 2017-10-7
  */
 public final class QRDecode {
@@ -85,7 +85,7 @@ public final class QRDecode {
             }
         }
         if (listener != null) {
-            listener.OnScannerCompletion(result, Tool.parseResult(result), srcBitmap);
+            listener.OnScannerCompletion(result);
         }
     }
 

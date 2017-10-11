@@ -17,7 +17,6 @@
 package com.bulesky.zxinglibrary.decode;
 
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,7 +32,6 @@ import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.GlobalHistogramBinarizer;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
 final class DecodeHandler extends Handler {
@@ -42,13 +40,11 @@ final class DecodeHandler extends Handler {
     private final Handler scannerViewHandler;
     private final MultiFormatReader multiFormatReader;
     private boolean running = true;
-    private boolean bundleThumbnail = false;
 
     DecodeHandler(CameraManager cameraManager, Handler scannerViewHandler,
-                  Map<DecodeHintType, Object> hints, boolean bundleThumbnail) {
+                  Map<DecodeHintType, Object> hints) {
         this.cameraManager = cameraManager;
         this.scannerViewHandler = scannerViewHandler;
-        this.bundleThumbnail = bundleThumbnail;
         multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
     }
@@ -80,7 +76,7 @@ final class DecodeHandler extends Handler {
      * @param height The height of the preview frame.
      */
     private void decode(byte[] data, int width, int height) {
-        //竖屏识别一维
+        //竖屏识别一维情况
         if (cameraManager.getContext().getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_PORTRAIT) {
             byte[] rotatedData = new byte[data.length];
@@ -112,8 +108,6 @@ final class DecodeHandler extends Handler {
                 //会向 ScannerViewHandler 发消息
                 Message message = Message.obtain(handler, Tool.DECODE_SUCCEEDED, rawResult);
                 Bundle bundle = new Bundle();
-                if (bundleThumbnail)
-                    bundleThumbnail(source, bundle);
                 message.setData(bundle);
                 message.sendToTarget();
             }
@@ -125,18 +119,5 @@ final class DecodeHandler extends Handler {
         }
     }
 
-    private static void bundleThumbnail(PlanarYUVLuminanceSource source,
-                                        Bundle bundle) {
-        int[] pixels = source.renderThumbnail();
-        int width = source.getThumbnailWidth();
-        int height = source.getThumbnailHeight();
-        Bitmap bitmap = Bitmap.createBitmap(pixels, 0, width, width, height,
-                Bitmap.Config.ARGB_8888);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
-        bundle.putByteArray(DecodeThread.BARCODE_BITMAP, out.toByteArray());
-        bundle.putFloat(DecodeThread.BARCODE_SCALED_FACTOR, (float) width
-                / source.getWidth());
-    }
 
 }

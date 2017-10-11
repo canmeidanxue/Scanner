@@ -1,4 +1,4 @@
-package com.bulesky.zxinglibrary.picture;
+package com.bulesky.zxinglibrary.album;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bulesky.zxinglibrary.R;
+import com.bulesky.zxinglibrary.album.adapter.PictureTotalAdapter;
+import com.bulesky.zxinglibrary.album.entity.Picture;
+import com.bulesky.zxinglibrary.album.util.SortPictureListByTime;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -26,10 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 选择相册，手机所有的图片列表
- * Created by hupei on 2016/7/7.
+ * 呈现所有的图片
+ * Create by hsl on 2017-10-10
  */
-public class PickPictureTotalActivity extends Activity {
+public class PictureTotalActivity extends Activity {
     public static final int REQUEST_CODE_SELECT_PICTURE = 102;
     public static final int REQUEST_CODE_SELECT_ALBUM = 104;
     public static final String EXTRA_PICTURE_PATH = "picture_path";
@@ -39,28 +42,27 @@ public class PickPictureTotalActivity extends Activity {
     private final static int SCAN_OK = 1;
     private final static int SCAN_ERROR = 2;
     private ProgressDialog mProgressDialog;
-    private PickPictureTotalAdapter mAdapter;
+    private PictureTotalAdapter mAdapter;
     private ListView mListView;
     private final MyHandler myHandler = new MyHandler(this);
 
     private static class MyHandler extends Handler {
-        private final WeakReference<PickPictureTotalActivity> mActivity;
+        private final WeakReference<PictureTotalActivity> mActivity;
 
-        public MyHandler(PickPictureTotalActivity activity) {
+        public MyHandler(PictureTotalActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            PickPictureTotalActivity activity = mActivity.get();
+            PictureTotalActivity activity = mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
                     case SCAN_OK:
                         //关闭进度条
                         activity.mProgressDialog.dismiss();
-                        activity.mAdapter = new PickPictureTotalAdapter(activity,
-                                activity.list = activity.subGroupOfPicture(activity.mGroupMap));
+                        activity.mAdapter = new PictureTotalAdapter(activity, activity.list = activity.subGroupOfPicture(activity.mGroupMap));
                         activity.mListView.setAdapter(activity.mAdapter);
                         break;
                     case SCAN_ERROR:
@@ -74,24 +76,18 @@ public class PickPictureTotalActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pick_picture_total);
-        mListView = (ListView) findViewById(R.id.pick_picture_total_listView);
+        setContentView(R.layout.activity_picture_total);
+        mListView =  findViewById(R.id.picture_total_listView);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 List<String> childList = mGroupMap.get(list.get(position).getFolderName());
-                PickPictureActivity.gotoActivity(PickPictureTotalActivity.this, (ArrayList<String>) childList);
+                PictureListActivity.gotoActivity(PictureTotalActivity.this,(ArrayList<String>) childList);
             }
         });
         getPicture();
-    }
-
-    @Override
-    protected void onPause() {
-        mProgressDialog.dismiss();
-        super.onPause();
     }
 
     /**
@@ -106,7 +102,7 @@ public class PickPictureTotalActivity extends Activity {
             @Override
             public void run() {
                 Uri pictureUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                ContentResolver contentResolver = PickPictureTotalActivity.this.getContentResolver();
+                ContentResolver contentResolver = PictureTotalActivity.this.getContentResolver();
 
                 //只查询jpeg和png的图片
                 Cursor cursor = contentResolver.query(pictureUri, null,
@@ -142,7 +138,6 @@ public class PickPictureTotalActivity extends Activity {
         }).start();
     }
 
-
     /**
      * 组装分组界面GridView的数据源，因为我们扫描手机的时候将图片信息放在HashMap中
      * 所以需要遍历HashMap将数据组装成List
@@ -161,7 +156,7 @@ public class PickPictureTotalActivity extends Activity {
             Picture picture = new Picture();
             String key = entry.getKey();
             List<String> value = entry.getValue();
-            SortPictureList sortList = new SortPictureList();
+            SortPictureListByTime sortList = new SortPictureListByTime();
             //按修改时间排序
             Collections.sort(value, sortList);
             picture.setFolderName(key);
@@ -170,14 +165,13 @@ public class PickPictureTotalActivity extends Activity {
             list.add(picture);
         }
         return list;
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
-            if (requestCode == PickPictureTotalActivity.REQUEST_CODE_SELECT_ALBUM) {
+            if (requestCode == PictureTotalActivity.REQUEST_CODE_SELECT_ALBUM) {
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }
@@ -185,7 +179,7 @@ public class PickPictureTotalActivity extends Activity {
     }
 
     public static void gotoActivity(Activity activity) {
-        Intent intent = new Intent(activity, PickPictureTotalActivity.class);
+        Intent intent = new Intent(activity, PictureTotalActivity.class);
         activity.startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
     }
 }

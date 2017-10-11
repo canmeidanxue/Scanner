@@ -1,23 +1,28 @@
-package com.bulesky.zxinglibrary.picture;
+package com.bulesky.zxinglibrary.album.adapter;
 
 import android.content.Context;
 import android.widget.ImageView;
 
 import com.bulesky.zxinglibrary.R;
+import com.bulesky.zxinglibrary.album.entity.Picture;
+import com.bulesky.zxinglibrary.album.entity.PictureViewHolder;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 /**
- * Created by hupei on 2016/7/14.
+ * Describe:列表形式呈现图片
+ * Created by hsl on 2017/10/10.
  */
-class PickPictureTotalAdapter extends CygAdapter<Picture> {
-    public PickPictureTotalAdapter(Context context, List<Picture> objects) {
-        super(context, R.layout.activity_pick_picture_total_list_item, objects);
+
+
+public class PictureTotalAdapter extends PictureBaseAdapter<Picture> {
+    public PictureTotalAdapter(Context mContext, List<Picture> objects) {
+        super(mContext, R.layout.activity_pick_picture_total_list_item, objects);
     }
 
     @Override
-    public void onBindData(CygViewHolder viewHolder, Picture item, int position) {
+    public void onBindData(PictureViewHolder viewHolder, Picture item, int position) {
         viewHolder.setText(R.id.pick_picture_total_list_item_group_title, item.getFolderName());
         viewHolder.setText(R.id.pick_picture_total_list_item_group_count
                 , "(" + Integer.toString(item.getPictureCount()) + ")");

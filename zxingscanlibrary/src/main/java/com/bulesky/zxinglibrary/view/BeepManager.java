@@ -26,7 +26,8 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Manages beeps and vibrations
+ * 扫描完成时的声音
+ *  Created by hsl on 2017/10/11.
  */
 final class BeepManager implements MediaPlayer.OnErrorListener, Closeable {
 

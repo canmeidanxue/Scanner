@@ -1,8 +1,11 @@
-package com.bulesky.zxinglibrary.picture;
+package com.bulesky.zxinglibrary.album.entity;
 
 /**
- * Created by hupei on 2016/7/7.
+ * Describe:相册图片实体
+ * Created by hsl on 2017/10/10.
  */
+
+
 public class Picture {
     /**
      * 文件夹的第一张图片路径
@@ -40,5 +43,4 @@ public class Picture {
     public void setPictureCount(int pictureCount) {
         this.pictureCount = pictureCount;
     }
-
 }

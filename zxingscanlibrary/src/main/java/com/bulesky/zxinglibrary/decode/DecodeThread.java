@@ -33,7 +33,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * This thread does all the heavy lifting of decoding the images.
  *
- * @author dswitkin@google.com (Daniel Switkin)
+ * Update by hsl 2017-10-11
  */
 public final class DecodeThread extends Thread {
 
@@ -45,13 +45,11 @@ public final class DecodeThread extends Thread {
     private final Map<DecodeHintType, Object> hints;
     private DecodeHandler handler;
     private final CountDownLatch handlerInitLatch;
-    private boolean bundleThumbnail = false;
 
     public DecodeThread(CameraManager cameraManager, Handler scannerViewHandler,
-                        Collection<BarcodeFormat> decodeFormats, boolean bundleThumbnail) {
+                        Collection<BarcodeFormat> decodeFormats) {
         this.cameraManager = cameraManager;
         this.scannerViewHandler = scannerViewHandler;
-        this.bundleThumbnail = bundleThumbnail;
         handlerInitLatch = new CountDownLatch(1);
 
         hints = new EnumMap<>(DecodeHintType.class);
@@ -62,10 +60,10 @@ public final class DecodeThread extends Thread {
 
             decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
             // 一维码：商品
-            boolean decode1DProduct = true;
-            if (decode1DProduct) {
-                decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
-            }
+//            boolean decode1DProduct = true;
+//            if (decode1DProduct) {
+//                decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
+//            }
             // 一维码：工业
             boolean decode1DIndustrial = true;
             if (decode1DIndustrial) {
@@ -76,11 +74,11 @@ public final class DecodeThread extends Thread {
             if (decodeQR) {
                 decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
             }
-            // Data Matrix
-            boolean decodeDataMatrix = true;
-            if (decodeDataMatrix) {
-                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
-            }
+//            // 矩阵码
+//            boolean decodeDataMatrix = true;
+//            if (decodeDataMatrix) {
+//                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
+//            }
         }
         hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
 
@@ -99,7 +97,7 @@ public final class DecodeThread extends Thread {
     @Override
     public void run() {
         Looper.prepare();
-        handler = new DecodeHandler(cameraManager, scannerViewHandler, hints, bundleThumbnail);
+        handler = new DecodeHandler(cameraManager, scannerViewHandler, hints);
         handlerInitLatch.countDown();
         Looper.loop();
     }

@@ -19,7 +19,8 @@ package com.bulesky.zxinglibrary.camera.open;
 import android.hardware.Camera;
 
 /**
- * Represents an open {@link Camera} and its metadata, like facing direction and orientation.
+ * Describe:打开相机实体
+ * Created by hsl on 2017/10/11.
  */
 @SuppressWarnings("deprecation")
 public final class OpenCamera {

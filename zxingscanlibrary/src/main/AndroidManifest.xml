@@ -4,8 +4,8 @@
 
     <application>
         <activity android:name=".activity.ScannerActivity"/>
-        <activity android:name=".picture.PickPictureActivity"/>
-        <activity android:name=".picture.PickPictureTotalActivity"/>
+        <activity android:name=".album.PictureListActivity"/>
+        <activity android:name=".album.PictureTotalActivity"/>
     </application>
 
 </manifest>

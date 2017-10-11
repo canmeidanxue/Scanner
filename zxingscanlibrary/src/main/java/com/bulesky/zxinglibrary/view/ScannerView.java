@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
+ *自定义扫描界面
  * update by hsl on 2017-10-5
  */
 public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
@@ -43,7 +44,7 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
     private int laserFrameWidth, laserFrameHeight;//扫描框大小
     private int laserFrameTopMargin;//扫描框离屏幕上方距离
     private Collection<BarcodeFormat> decodeFormats;//解码类型
-    private boolean mShowResThumbnail = false;//扫描成功是否显示缩略图
+//    private boolean mShowResThumbnail = false;//扫描成功是否显示缩略图
     private CameraFacing mCameraFacing = CameraFacing.BACK;//默认后置摄像头
     private boolean mScanFullScreen;//全屏扫描
     private boolean invertScan;//扫描反色二维码（黑底白色码）
@@ -126,8 +127,6 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
         } catch (RuntimeException e) {
-            // Barcode Scanner has seen crashes in the wild of this variety:
-            // java.?lang.?RuntimeException: Fail to connect to camera service
             Log.w(TAG, "Unexpected error initializing camera", e);
         }
     }
@@ -144,7 +143,7 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
         //扫描成功
         if (mScannerCompletionListener != null) {
             //转换结果
-            mScannerCompletionListener.OnScannerCompletion(rawResult, Tool.parseResult(rawResult), barcode);
+            mScannerCompletionListener.OnScannerCompletion(rawResult);
         }
         //设置扫描结果图片
         if (barcode != null) {
@@ -204,9 +203,6 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-//        if (surfaceHolder == null) {
-//            Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
-//        }
         if (!hasSurface) {
             hasSurface = true;
             initCamera(surfaceHolder);
@@ -427,17 +423,6 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
     }
 
     /**
-     * 是否显示扫描结果缩略图
-     *
-     * @param showResThumbnail
-     * @return
-     */
-    public ScannerView isShowResThumbnail(boolean showResThumbnail) {
-        this.mShowResThumbnail = showResThumbnail;
-        return this;
-    }
-
-    /**
      * 设置扫描框线移动间距，每毫秒移动 moveSpeed 像素
      *
      * @param moveSpeed px
@@ -502,15 +487,9 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
             mScannerViewHandler.sendEmptyMessageDelayed(Tool.RESTART_PREVIEW, delayMS);
     }
 
-    ViewfinderView getViewfinderView() {
-        return mViewfinderView;
-    }
 
     void drawViewfinder() {
         mViewfinderView.drawViewfinder();
     }
 
-    boolean getShowResThumbnail() {
-        return mShowResThumbnail;
-    }
 }

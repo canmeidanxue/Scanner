@@ -31,9 +31,8 @@ import com.google.zxing.Result;
 import java.util.Collection;
 
 /**
- * 针对扫描任务的Handler，可接收的message有启动扫描（restart_preview）、扫描成功（decode_succeeded）、扫描失败（decode_failed）等等
- * This class handles all the messaging which comprises the state machine for
- * capture.
+ * 扫描状态处理
+ * Update by hsl on 2017-10-11
  *
  */
 final class ScannerViewHandler extends Handler {
@@ -52,8 +51,7 @@ final class ScannerViewHandler extends Handler {
         this.scannerView = scannerView;
         this.cameraManager = cameraManager;
         //启动扫描线程
-        decodeThread = new DecodeThread(cameraManager, this, decodeFormats,
-                scannerView.getShowResThumbnail());
+        decodeThread = new DecodeThread(cameraManager, this, decodeFormats);
 
         decodeThread.start();
         state = State.SUCCESS;
@@ -89,10 +87,6 @@ final class ScannerViewHandler extends Handler {
             case Tool.DECODE_FAILED:
                 state = State.PREVIEW;
                 cameraManager.requestPreviewFrame(decodeThread.getHandler(), Tool.DECODE);
-                break;
-            case Tool.RETURN_SCAN_RESULT:
-                break;
-            case Tool.LAUNCH_PRODUCT_QUERY:
                 break;
         }
     }

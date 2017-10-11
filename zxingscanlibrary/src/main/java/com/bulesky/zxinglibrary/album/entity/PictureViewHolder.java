@@ -1,4 +1,4 @@
-package com.bulesky.zxinglibrary.picture;
+package com.bulesky.zxinglibrary.album.entity;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -8,29 +8,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by hupei on 2016/7/12.
+ * Describe:
+ * Created by hsl on 2017/10/10.
  */
-public final class CygViewHolder {
+
+
+public class PictureViewHolder {
     private Context mContext;
     private SparseArray<View> mViews;
     private View mItemView;
 
-    public static CygViewHolder get(Context context, int resource, View convertView,
-                                    ViewGroup parent) {
-        if (convertView == null) {
-            View view = LayoutInflater.from(context).inflate(resource, parent, false);
-            return new CygViewHolder(context, view);
-        }
-        return (CygViewHolder) convertView.getTag();
-    }
-
-    private CygViewHolder(Context context, View itemView) {
-        mContext = context;
+    public PictureViewHolder(Context mContext,View mItemView) {
+        this.mContext = mContext;
         mViews = new SparseArray<>();
-        mItemView = itemView;
+        this.mItemView = mItemView;
         mItemView.setTag(this);
     }
 
+    public static PictureViewHolder get(Context context, int resource, View convertView,
+                                    ViewGroup parent) {
+        if (convertView == null) {
+            View view = LayoutInflater.from(context).inflate(resource, parent, false);
+            return new PictureViewHolder(context, view);
+        }
+        return (PictureViewHolder) convertView.getTag();
+    }
 
     public <T extends View> T findViewById(int id) {
         View view = mViews.get(id);
@@ -40,11 +42,6 @@ public final class CygViewHolder {
         }
         return (T) view;
     }
-
-    public CygViewHolder setText(int viewId, int textId) {
-        return setText(viewId, mContext.getString(textId));
-    }
-
     /**
      * 设置 TextView 的显示的字符串
      *
@@ -52,7 +49,7 @@ public final class CygViewHolder {
      * @param text
      * @return
      */
-    public CygViewHolder setText(int viewId, String text) {
+    public PictureViewHolder setText(int viewId, String text) {
         View view = findViewById(viewId);
         if (view instanceof TextView) {
             ((TextView) view).setText(text);
@@ -63,4 +60,9 @@ public final class CygViewHolder {
     public View getItemView() {
         return mItemView;
     }
+
+
+
+
+
 }
