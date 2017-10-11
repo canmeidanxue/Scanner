@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/capture_containter"
+    android:layout_width="match_parent"
+    android:background="@drawable/scan_mask"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/capture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true" />
+
+    <RelativeLayout
+        android:id="@+id/qr_code_header_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@android:color/black">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="扫描"
+            android:textColor="@color/qr_code_white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/qr_code_header_black_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="相册"
+            android:onClick="btn"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/capture_crop_layout"
+        android:layout_width="800dp"
+        android:layout_height="800dp"
+        android:layout_below="@id/qr_code_header_bar"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name">
+        <view.ScanBoxView
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestTessTwo</string>
+    <item name="tag_img" type="id"></item>
+    <item name="tag_text" type="id"></item>
+</resources>

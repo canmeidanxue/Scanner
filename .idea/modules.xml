@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ScannerDemo.iml" filepath="$PROJECT_DIR$/ScannerDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ocr_ui/ocr_ui.iml" filepath="$PROJECT_DIR$/ocr_ui/ocr_ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scanlibrary/scanlibrary.iml" filepath="$PROJECT_DIR$/scanlibrary/scanlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tess-two/tess-two.iml" filepath="$PROJECT_DIR$/tess-two/tess-two.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zxing/zxing.iml" filepath="$PROJECT_DIR$/zxing/zxing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zxingscanlibrary/zxingscanlibrary.iml" filepath="$PROJECT_DIR$/zxingscanlibrary/zxingscanlibrary.iml" />
+    </modules>
+  </component>
+</project>

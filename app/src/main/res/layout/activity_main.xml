@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/re_ma_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.scannerdemo.MainActivity">
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫描" />
+    <Button
+        android:layout_below="@id/btn_scan"
+        android:id="@+id/btn_recognise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="识别" />
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_below="@id/btn_recognise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试" />
+    <Button
+        android:id="@+id/btn_new_scan"
+        android:layout_below="@id/btn_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="可设置" />
+    <Button
+        android:id="@+id/btn_baidu_recognise"
+        android:layout_below="@id/btn_new_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="百度OCR识别" />
+
+    <TextView
+        android:id="@+id/tv_ma_show_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/btn_scan"
+        android:gravity="center" />
+
+    <view.ScanBoxView
+        android:id="@+id/sbv_ma_scan"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_ma_show_result" />
+    <TextView
+        android:id="@+id/tvShowResult"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
