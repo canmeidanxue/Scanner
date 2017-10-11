@@ -117,6 +117,22 @@ final class DecodeHandler extends Handler {
                 message.sendToTarget();
             }
         }
+
+        //测试代码
+//        if (!TextUtils.isEmpty(result)) {
+//            if (handler != null) {
+//                //会向 ScannerViewHandler 发消息
+//                Message message = Message.obtain(handler, Tool.DECODE_SUCCEEDED, result);
+//                Bundle bundle = new Bundle();
+//                message.setData(bundle);
+//                message.sendToTarget();
+//            }
+//        }else {
+//            if (handler != null) {
+//                Message message = Message.obtain(handler, Tool.DECODE_FAILED);
+//                message.sendToTarget();
+//            }
+//        }
     }
 
 

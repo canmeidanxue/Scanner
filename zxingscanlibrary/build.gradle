@@ -7,6 +7,12 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11 -frtti -fexceptions"
+//                abiFilters "armeabi"
+            }
+        }
     }
     buildTypes {
         release {
@@ -17,6 +23,11 @@ android {
     lintOptions {
         abortOnError false
         checkReleaseBuilds false
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 }
 
