@@ -69,7 +69,7 @@ public final class CameraManager {
     private int laserFrameTopMargin;//扫描框离屏幕上方距离
     private boolean scanFullScreen;
     private boolean invertScan;
-
+    private Rect realFramingRect;
     public CameraManager(Context context, CameraFacing cameraFacing) {
         this.context = context;
         this.configManager = new CameraConfigurationManager(context);
@@ -387,6 +387,25 @@ public final class CameraManager {
         return result;
     }
 
+    public Rect getRealFramingRect() {
+        if (realFramingRect == null) {
+            //获取屏幕大小，然后根据屏幕宽度由中间截取于宽度等长的正方形
+            Point screenResolution = configManager.getScreenResolution();
+            int leftOffset = 0;
+            int topOffset = (screenResolution.y - screenResolution.x) / 2;
+            Rect rect = new Rect(leftOffset, topOffset, screenResolution.x,
+                    screenResolution.x + topOffset);
+
+            //根据图片分辨率和屏幕分辨率截取实际大小的图片区域
+            Point cameraResolution = configManager.getCameraResolution();
+            rect.left = rect.left * cameraResolution.y / screenResolution.x;
+            rect.right = rect.right * cameraResolution.y / screenResolution.x;
+            rect.top = rect.top * cameraResolution.x / screenResolution.y;
+            rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+            realFramingRect = rect;
+        }
+        return realFramingRect;
+    }
     /**
      * 设置扫描框与屏幕上方距离
      *

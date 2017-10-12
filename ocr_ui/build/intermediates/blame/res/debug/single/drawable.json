@@ -8,12 +8,12 @@
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\drawable\\abc_list_selector_background_transition_holo_dark.xml"
     },
     {
-        "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_check_material.xml",
-        "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\drawable\\abc_btn_check_material.xml"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_radio_material.xml",
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\drawable\\abc_btn_radio_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_check_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\drawable\\abc_btn_check_material.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_edit_text_material.xml",

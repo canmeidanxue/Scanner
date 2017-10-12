@@ -13,4 +13,5 @@ public interface OnScannerCompletionListener {
      * @param rawResult    扫描结果
      */
     void OnScannerCompletion(Result rawResult);
+    void OnScannerCompletion(String rawResult);
 }

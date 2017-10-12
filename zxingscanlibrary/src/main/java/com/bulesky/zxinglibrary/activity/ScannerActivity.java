@@ -1,6 +1,7 @@
 package com.bulesky.zxinglibrary.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -8,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -19,9 +21,11 @@ import com.bulesky.zxinglibrary.common.Tool;
 import com.bulesky.zxinglibrary.decode.QRDecode;
 import com.bulesky.zxinglibrary.view.OnScannerCompletionListener;
 import com.bulesky.zxinglibrary.view.ScannerView;
+import com.duoyi.qrdecode.BarcodeFormat;
 import com.google.zxing.Result;
 
 
+@SuppressWarnings("deprecation")
 public class ScannerActivity extends Activity implements OnScannerCompletionListener, SensorEventListener {
     public static final String EXTRA_LASER_LINE_MODE = "extra_laser_line_mode";
     public static final String EXTRA_SCAN_MODE = "extra_scan_mode";
@@ -38,12 +42,14 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     //扫描二维码
     public static final int EXTRA_SCAN_MODE_2 = 2;
     private String TAG = ScannerActivity.class.getSimpleName();
-
+    private static int RESULT_LOAD_IMAGE = 1000;
     boolean showThumbnail = false;
     private ScannerView mScannerView;
     private Result mLastResult;
     private TextView tv_aulbum;
     private SensorManager sm;
+    private BarcodeFormat barcodeFormat;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +154,7 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
             if (requestCode == PictureTotalActivity.REQUEST_CODE_SELECT_PICTURE) {
@@ -162,6 +168,16 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     @Override
     public void OnScannerCompletion(Result rawResult) {
         if (null != rawResult) {
+            Toast.makeText(ScannerActivity.this, rawResult.toString(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(ScannerActivity.this, "未识别到二维码信息", Toast.LENGTH_SHORT).show();
+        }
+        finish();
+    }
+
+    @Override
+    public void OnScannerCompletion(String rawResult) {
+        if (!TextUtils.isEmpty(rawResult)) {
             Toast.makeText(ScannerActivity.this, rawResult.toString(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(ScannerActivity.this, "未识别到二维码信息", Toast.LENGTH_SHORT).show();

@@ -4,12 +4,12 @@
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\layout\\notification_template_part_chronometer.xml"
     },
     {
-        "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
-        "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\layout\\abc_action_bar_up_container.xml"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple.xml",
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\layout\\abc_screen_simple.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\acac9108ce640e842e19c32a43334eb0437489d1\\output\\res\\layout\\abc_action_bar_up_container.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\compare\\ScannerDemo\\ocr_ui\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",

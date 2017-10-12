@@ -134,11 +134,9 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
      * A valid barcode has been found, so give an indication of success and show
      * the results.
      *
-     * @param rawResult   The contents of the barcode.
-     * @param scaleFactor amount by which thumbnail was scaled
-     * @param barcode     A greyscale bitmap of the camera data which was decoded.
+     * @param rawResult The contents of the barcode.
      */
-    void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
+    void handleDecode(Result rawResult) {
         //扫描成功
         if (mScannerCompletionListener != null) {
             //转换结果
@@ -150,8 +148,26 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
                 mBeepManager.setMediaResId(mMediaResId);
             }
             mBeepManager.playBeepSoundAndVibrate();
-            if (barcode != null)
-                drawResultPoints(barcode, scaleFactor, rawResult);
+        }
+    }
+    /**
+     * A valid barcode has been found, so give an indication of success and show
+     * the results.
+     *
+     * @param rawResult
+     */
+    void handleDecodeC(String rawResult) {
+        //扫描成功
+        if (mScannerCompletionListener != null) {
+            //转换结果
+            mScannerCompletionListener.OnScannerCompletion(rawResult);
+        }
+        if (mMediaResId != 0) {
+            if (mBeepManager == null) {
+                mBeepManager = new BeepManager(getContext());
+                mBeepManager.setMediaResId(mMediaResId);
+            }
+            mBeepManager.playBeepSoundAndVibrate();
         }
     }
 
@@ -452,6 +468,7 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
 
     /**
      * 设置是否显示灯
+     *
      * @param isShow
      * @return
      */

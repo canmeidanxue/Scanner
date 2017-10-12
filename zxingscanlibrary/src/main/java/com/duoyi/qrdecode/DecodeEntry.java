@@ -16,14 +16,14 @@ public class DecodeEntry {
         Bitmap scanBitmap;
         options.inJustDecodeBounds = true;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-        scanBitmap = BitmapFactory.decodeFile(filename, options);
+//        scanBitmap = BitmapFactory.decodeFile(filename, options);
         options.inJustDecodeBounds = false;
 
-        int heightSampleSize = (int)Math.ceil((double)options.outHeight/DEFAULT_HEIGHT);
-        int widhtSampleSize = (int) Math.ceil((double)options.outWidth /DEFAULT_WIDTH);
+        int heightSampleSize = (int) Math.ceil((double) options.outHeight / DEFAULT_HEIGHT);
+        int widhtSampleSize = (int) Math.ceil((double) options.outWidth / DEFAULT_WIDTH);
         int sampleSize = 1;
-        if (heightSampleSize >= 1 || widhtSampleSize >= 1 ){
-            sampleSize = heightSampleSize > widhtSampleSize? heightSampleSize:widhtSampleSize;
+        if (heightSampleSize >= 1 || widhtSampleSize >= 1) {
+            sampleSize = heightSampleSize > widhtSampleSize ? heightSampleSize : widhtSampleSize;
         }
 
         options.inSampleSize = sampleSize;

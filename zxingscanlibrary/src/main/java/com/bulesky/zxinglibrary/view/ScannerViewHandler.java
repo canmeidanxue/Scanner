@@ -16,8 +16,6 @@
 
 package com.bulesky.zxinglibrary.view;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +24,6 @@ import com.bulesky.zxinglibrary.camera.CameraManager;
 import com.bulesky.zxinglibrary.common.Tool;
 import com.bulesky.zxinglibrary.decode.DecodeThread;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
 
 import java.util.Collection;
 
@@ -70,19 +67,22 @@ final class ScannerViewHandler extends Handler {
             case Tool.DECODE_SUCCEEDED:
                 state = State.SUCCESS;
                 Bundle bundle = message.getData();
-                Bitmap barcode = null;
-                float scaleFactor = 1.0f;
-                if (bundle != null) {
-                    byte[] compressedBitmap = bundle
-                            .getByteArray(DecodeThread.BARCODE_BITMAP);
-                    if (compressedBitmap != null && compressedBitmap.length > 0) {
-                        barcode = BitmapFactory.decodeByteArray(compressedBitmap,
-                                0, compressedBitmap.length, null);
-                        barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
-                    }
-                    scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
-                }
-                scannerView.handleDecode((Result) message.obj, barcode, scaleFactor);
+//                Bitmap barcode = null;
+//                float scaleFactor = 1.0f;
+//                if (bundle != null) {
+//                    byte[] compressedBitmap = bundle
+//                            .getByteArray(DecodeThread.BARCODE_BITMAP);
+//                    if (compressedBitmap != null && compressedBitmap.length > 0) {
+//                        barcode = BitmapFactory.decodeByteArray(compressedBitmap,
+//                                0, compressedBitmap.length, null);
+//                        barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
+//                    }
+//                    scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
+//                }
+                //java 解析返回的为Result
+//                scannerView.handleDecode((Result) message.obj, barcode, scaleFactor);
+                //c解析返回的是String
+                scannerView.handleDecodeC((String) message.obj);
                 break;
             case Tool.DECODE_FAILED:
                 state = State.PREVIEW;
