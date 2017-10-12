@@ -39,6 +39,7 @@ import java.io.IOException;
  *
  * Update by hsl on 2017-10-11
  */
+@SuppressWarnings("deprecation")
 public final class CameraManager {
 
     private static final String TAG = CameraManager.class.getSimpleName();
@@ -182,8 +183,6 @@ public final class CameraManager {
     /**
      * 设置闪光灯
      *
-     * @param newSetting if {@code true}, light should be turned on if currently off. And vice
-     *                   versa.
      */
     public synchronized void setTorch(boolean newSetting) {
         OpenCamera theCamera = camera;

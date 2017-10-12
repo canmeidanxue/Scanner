@@ -76,7 +76,7 @@ final class DecodeHandler extends Handler {
      * @param height The height of the preview frame.
      */
     private void decode(byte[] data, int width, int height) {
-        //竖屏识别一维情况
+        // 这里需要将获取的data翻转一下，因为相机默认拿的的横屏的数据
         if (cameraManager.getContext().getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_PORTRAIT) {
             byte[] rotatedData = new byte[data.length];
@@ -84,14 +84,17 @@ final class DecodeHandler extends Handler {
                 for (int x = 0; x < width; x++)
                     rotatedData[x * height + height - y - 1] = data[x + y * width];
             }
+            // 宽高也要调整
             int tmp = width;
             width = height;
             height = tmp;
             data = rotatedData;
         }
+
         Result rawResult = null;
         PlanarYUVLuminanceSource source = cameraManager.buildLuminanceSource(data, width, height);
         if (source != null) {
+            //觉得HybridBinarizer速度慢,改成GlobalHistogramBinarizer
             BinaryBitmap bitmap = new BinaryBitmap(new GlobalHistogramBinarizer(source));
             try {
                 rawResult = multiFormatReader.decodeWithState(bitmap);

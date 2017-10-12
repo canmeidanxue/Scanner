@@ -3,6 +3,10 @@ package com.bulesky.zxinglibrary.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,12 +22,11 @@ import com.bulesky.zxinglibrary.view.ScannerView;
 import com.google.zxing.Result;
 
 
-public class ScannerActivity extends Activity implements OnScannerCompletionListener {
+public class ScannerActivity extends Activity implements OnScannerCompletionListener, SensorEventListener {
     public static final String EXTRA_LASER_LINE_MODE = "extra_laser_line_mode";
     public static final String EXTRA_SCAN_MODE = "extra_scan_mode";
     public static final String EXTRA_SHOW_THUMBNAIL = "EXTRA_SHOW_THUMBNAIL";
     public static final String EXTRA_SCAN_FULL_SCREEN = "EXTRA_SCAN_FULL_SCREEN";
-    public static final String EXTRA_HIDE_LASER_FRAME = "EXTRA_HIDE_LASER_FRAME";
 
     public static final int EXTRA_LASER_LINE_MODE_0 = 0;
     public static final int EXTRA_LASER_LINE_MODE_1 = 1;
@@ -40,6 +43,7 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     private ScannerView mScannerView;
     private Result mLastResult;
     private TextView tv_aulbum;
+    private SensorManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,6 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
         //全屏识别
         mScannerView.isScanFullScreen(extras.getBoolean(EXTRA_SCAN_FULL_SCREEN));
         //隐藏扫描框
-        mScannerView.isHideLaserFrame(extras.getBoolean(EXTRA_HIDE_LASER_FRAME));
 //        mScannerView.isScanInvert(true);//扫描反色二维码
 //        mScannerView.setCameraFacing(CameraFacing.FRONT);
 //        mScannerView.setLaserMoveSpeed(1);//速度
@@ -90,6 +93,11 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
                 mScannerView.setLaserColor(Color.RED);
                 break;
         }
+        sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+        //光线传感器 参数指定获取什么类型的传感器，也可以指定获取所有传感器
+        Sensor sensor = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
+        //注册一个监听器
+        sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);//第三参数代表采样频率，频率越高，精度越
         tv_aulbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +117,12 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     protected void onPause() {
         mScannerView.onPause();
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        sm.unregisterListener(this);
+        super.onDestroy();
     }
 
     @Override
@@ -149,9 +163,25 @@ public class ScannerActivity extends Activity implements OnScannerCompletionList
     public void OnScannerCompletion(Result rawResult) {
         if (null != rawResult) {
             Toast.makeText(ScannerActivity.this, rawResult.toString(), Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             Toast.makeText(ScannerActivity.this, "未识别到二维码信息", Toast.LENGTH_SHORT).show();
         }
         finish();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        //不同类型的传感器，values的意义是不一样的 这里指的是光线的强弱
+        float light = sensorEvent.values[0];
+        if (light < 50) {
+            mScannerView.setFlashBitmap(true);
+        } else {
+            mScannerView.setFlashBitmap(false);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }

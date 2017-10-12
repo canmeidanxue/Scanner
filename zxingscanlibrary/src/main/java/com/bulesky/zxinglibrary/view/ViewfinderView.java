@@ -29,8 +29,10 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
+import com.bulesky.zxinglibrary.R;
 import com.bulesky.zxinglibrary.camera.CameraManager;
 import com.bulesky.zxinglibrary.common.Tool;
 
@@ -40,12 +42,10 @@ import com.bulesky.zxinglibrary.common.Tool;
 final class ViewfinderView extends View {
 
     private static final int CURRENT_POINT_OPACITY = 0xA0;
-    private static final int MAX_RESULT_POINTS = 20;
     private static final int POINT_SIZE = 6;
     private static final int DEFAULT_LASER_LINE_HEIGHT = 2;//扫描线默认高度
     private static final int DEFAULT_LASER_MOVE_SPEED = 6;//默认每毫秒移动6px
 
-    private CameraManager cameraManager;
     private final Paint paint;
     private Bitmap resultBitmap;
 
@@ -68,9 +68,17 @@ final class ViewfinderView extends View {
     private boolean drawTextGravityBottom = true;//提示文字位置
     private int drawTextMargin;//提示文字与扫描框距离
     private boolean isLaserGridLine;//是否为网格资源文件
+    private int flashImageWidth;
+    private Bitmap flashOpen;
+    private boolean isVisibleFalsh;
+    private Context mContext;
+    private boolean isOpen;
+    private double bottom;
+    private CameraManager cameraManager;
 
     public ViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         laserMoveSpeed = DEFAULT_LASER_MOVE_SPEED;//默认每毫秒移动6px
         laserLineHeight = Tool.dp2px(context, DEFAULT_LASER_LINE_HEIGHT);
@@ -78,6 +86,8 @@ final class ViewfinderView extends View {
         laserFrameCornerLength = Tool.dp2px(context, 15f);
         drawTextSize = Tool.sp2px(context, 15f);
         drawTextMargin = Tool.dp2px(context, 20f);
+        flashOpen = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_flash_defaut);
+        flashImageWidth = flashOpen.getWidth();
     }
 
     void setCameraManager(CameraManager cameraManager) {
@@ -107,7 +117,55 @@ final class ViewfinderView extends View {
             drawText(canvas, frame);// 画扫描框下面的字
             drawLaserLine(canvas, frame);//绘制扫描线
             moveLaserSpeed(frame);//计算移动位置
+            drawLight(canvas, frame);//小灯
         }
+    }
+
+    private void drawLight(Canvas canvas, Rect frame) {
+        if (flashOpen != null) {
+            if (isVisibleFalsh) {
+                paint.setColor(Color.WHITE);
+                canvas.drawBitmap(flashOpen, (Tool.getSreenWidth(mContext) - flashImageWidth) / 2, frame.bottom - Tool.dp2px(mContext, 60), paint);
+                paint.setTextSize(drawTextSize);
+                canvas.drawText("轻触点亮", (Tool.getSreenWidth(mContext) - flashImageWidth) / 2 - Tool.dp2px(mContext,12), frame.bottom - Tool.dp2px(mContext, 10), paint);
+            } else {
+                if (!isOpen) {
+                    paint.setColor(Color.TRANSPARENT);
+                    canvas.drawBitmap(flashOpen, (Tool.getSreenWidth(mContext) - flashImageWidth) / 2, frame.bottom - Tool.dp2px(mContext, 60), paint);
+                    canvas.drawText("轻触点亮", (Tool.getSreenWidth(mContext) - flashImageWidth) / 2 + Tool.dp2px(mContext, 10), frame.bottom - Tool.dp2px(mContext, 10), paint);
+                } else {
+
+                }
+            }
+        }
+        bottom = frame.bottom - Tool.dp2px(mContext, 60);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        if (isVisibleFalsh) {
+            if (
+                    x > (Tool.getSreenWidth(mContext) - flashImageWidth) / 2 - Tool.dp2px(mContext, 20)
+                            && x < (Tool.getSreenWidth(mContext) - flashImageWidth) / 2 + Tool.dp2px(mContext, 20)) {
+                if (y > bottom - Tool.dp2px(mContext, 20) && y < bottom + Tool.dp2px(mContext, 50)) {
+                    if (!isOpen) {//开灯
+                        flashOpen = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_flash_open);
+                        cameraManager.setTorch(true);
+                        isOpen = true;
+                        flashImageWidth = flashOpen.getWidth();
+                    } else {  // 关灯
+                        flashOpen = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_flash_defaut);
+                        cameraManager.setTorch(false);
+                        isOpen = false;
+                        flashImageWidth = flashOpen.getWidth();
+                    }
+                    invalidate();
+                }
+            }
+        }
+        return super.onTouchEvent(event);
     }
 
     private void moveLaserSpeed(Rect frame) {
@@ -261,15 +319,6 @@ final class ViewfinderView extends View {
         invalidate();
     }
 
-    /**
-     * Draw a bitmap with the result points highlighted instead of the live scanning display.
-     *
-     * @param barcode An image of the decoded barcode.
-     */
-    public void drawResultBitmap(Bitmap barcode) {
-        resultBitmap = barcode;
-        invalidate();
-    }
 
     public void setLaserColor(int laserColor) {
         this.laserColor = laserColor;
@@ -283,6 +332,11 @@ final class ViewfinderView extends View {
     public void setLaserGridLineResId(int laserLineResId) {
         this.laserLineResId = laserLineResId;
         this.isLaserGridLine = true;
+    }
+
+    public void setFlashBitmap(boolean isVisible) {
+        isVisibleFalsh = isVisible;
+        invalidate();
     }
 
     public void setLaserLineHeight(int laserLineHeight) {

@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.bulesky.zxinglibrary.camera.CameraManager;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- *自定义扫描界面
+ * 自定义扫描界面
  * update by hsl on 2017-10-5
  */
 public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
@@ -44,7 +43,7 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
     private int laserFrameWidth, laserFrameHeight;//扫描框大小
     private int laserFrameTopMargin;//扫描框离屏幕上方距离
     private Collection<BarcodeFormat> decodeFormats;//解码类型
-//    private boolean mShowResThumbnail = false;//扫描成功是否显示缩略图
+    //    private boolean mShowResThumbnail = false;//扫描成功是否显示缩略图
     private CameraFacing mCameraFacing = CameraFacing.BACK;//默认后置摄像头
     private boolean mScanFullScreen;//全屏扫描
     private boolean invertScan;//扫描反色二维码（黑底白色码）
@@ -145,11 +144,6 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
             //转换结果
             mScannerCompletionListener.OnScannerCompletion(rawResult);
         }
-        //设置扫描结果图片
-        if (barcode != null) {
-            mViewfinderView.drawResultBitmap(barcode);
-        }
-
         if (mMediaResId != 0) {
             if (mBeepManager == null) {
                 mBeepManager = new BeepManager(getContext());
@@ -224,6 +218,7 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
 
     /**
      * 设置扫描成功监听器
+     *
      * @param listener
      * @return
      */
@@ -456,24 +451,12 @@ public class ScannerView extends FrameLayout implements SurfaceHolder.Callback {
     }
 
     /**
-     * 是否隐藏扫描框
-     *
-     * @param hide
+     * 设置是否显示灯
+     * @param isShow
      * @return
      */
-    public ScannerView isHideLaserFrame(boolean hide) {
-        this.mViewfinderView.setVisibility(hide ? View.GONE : View.VISIBLE);
-        return this;
-    }
-
-    /**
-     * 是否扫描反色二维码（黑底白码）
-     *
-     * @param invertScan
-     * @return
-     */
-    public ScannerView isScanInvert(boolean invertScan) {
-        this.invertScan = invertScan;
+    public ScannerView setFlashBitmap(boolean isShow) {
+        this.mViewfinderView.setFlashBitmap(isShow);
         return this;
     }
 

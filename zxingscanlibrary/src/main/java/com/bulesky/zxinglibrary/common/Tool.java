@@ -1,6 +1,8 @@
 package com.bulesky.zxinglibrary.common;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 /**
@@ -32,7 +34,6 @@ public final class Tool {
 
         /**
          * 商品条码：PC and EAN
-         *
          */
         public static final String PRODUCT_MODE = "PRODUCT_MODE";
 
@@ -60,5 +61,12 @@ public final class Tool {
     public static int sp2px(Context context, float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue
                 , context.getResources().getDisplayMetrics());
+    }
+
+    public static int getSreenWidth(Context mContext) {
+        Resources resources = mContext.getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        return displayMetrics.widthPixels;
+
     }
 }

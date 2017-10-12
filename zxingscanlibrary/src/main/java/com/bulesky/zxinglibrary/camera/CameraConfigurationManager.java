@@ -19,7 +19,6 @@ package com.bulesky.zxinglibrary.camera;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
@@ -57,7 +56,7 @@ final class CameraConfigurationManager {
         Camera.Parameters parameters = camera.getCamera().getParameters();
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
-
+        //判断屏幕方向，是否有需要从自然的角度旋转到显示器的角度
         int displayRotation = display.getRotation();
         int cwRotationFromNaturalToDisplay;
         switch (displayRotation) {
@@ -94,7 +93,7 @@ final class CameraConfigurationManager {
         Point theScreenResolution = new Point();
         display.getSize(theScreenResolution);
         screenResolution = theScreenResolution;
-        //拉抻问题
+        //拉抻问题，如果摄像头生成的预览图片宽高比和手机屏幕像素宽高比（准确地说是和相机预览屏幕宽高比）不一样的话，投影的结果肯定就是图片被拉伸。
         Point screenResolutionForCamera = new Point();
         screenResolutionForCamera.x = screenResolution.x;
         screenResolutionForCamera.y = screenResolution.y;
@@ -120,14 +119,14 @@ final class CameraConfigurationManager {
         Camera.Parameters parameters = theCamera.getParameters();
 
         if (parameters == null) {
-            Log.w(TAG, "Device error: no camera parameters are available. Proceeding without " +
-                    "configuration.");
+//            Log.w(TAG, "Device error: no camera parameters are available. Proceeding without " +
+//                    "configuration.");
             return;
         }
-
-        if (safeMode) {
-            Log.w(TAG, "In camera config safe mode -- most settings will not be honored");
-        }
+//
+//        if (safeMode) {
+//            Log.w(TAG, "In camera config safe mode -- most settings will not be honored");
+//        }
 
         // 默认关闪光灯
         initializeTorch(parameters, FRONT_LIGHT_MODE_OFF, safeMode);
@@ -155,6 +154,7 @@ final class CameraConfigurationManager {
                 CameraConfigurationUtils.setFocusArea(parameters);
                 CameraConfigurationUtils.setMetering(parameters);
             }
+            CameraConfigurationUtils.setZoom(parameters);
 
         }
 
