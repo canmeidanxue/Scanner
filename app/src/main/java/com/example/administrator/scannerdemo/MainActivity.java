@@ -48,12 +48,6 @@ public class MainActivity extends Activity implements OnScanerListener{
                 startActivityForResult(new Intent(MainActivity.this, TestOrcActivity.class),REQUEST_CODE);
             }
         });
-        findViewById(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CameraActivity.class));
-            }
-        });
         findViewById(R.id.btn_new_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

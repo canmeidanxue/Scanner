@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.administrator.scannerdemo.R;
 
@@ -103,13 +104,18 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                     //这里返回的照片默认横向的，先将图片旋转90度
                     bmp = rotateToDegrees(bmp, 90);
                     //然后裁切出需要的区域，具体区域要和UI布局中配合，这里取图片正中间，宽度取图片的一半，高度这里用的适配数据，可以自定义
-                    bmp = bitmapCrop(bmp, bmp.getWidth() / 4, bmp.getHeight() / 2 - (int) getResources().getDimension(R.dimen.x25), bmp.getWidth() / 2, (int) getResources().getDimension(R.dimen.x50));
+                    bmp = bitmapCrop(bmp, bmp.getWidth() / 2 - (int) getResources().getDimension(R.dimen.x160) / 2, bmp.getHeight() / 2 - (int) getResources().getDimension(R.dimen.x50) / 2, (int) getResources().getDimension(R.dimen.x160), (int) getResources().getDimension(R.dimen.x50));
                     if (bmp == null)
                         return;
                     //将裁切的图片显示出来（测试用，需要为CameraView  setTag（ImageView））
-                    ImageView imageView = (ImageView) getTag();
-                    imageView.setImageBitmap(bmp);
+                    ImageView imageView = (ImageView) getTag(R.id.tag_img);
+                    final TextView textView = (TextView) getTag(R.id.tag_text);
                     stream.close();
+                    //灰度处理
+//                    bmp = ImageFilter.grayScale(bmp);
+//                    //二值化处理
+//                    bmp = ImageFilter.binaryzation(bmp);
+                    imageView.setImageBitmap(bmp);
                     //开始识别
 //                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
 //                        @Override
@@ -130,8 +136,8 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                                 Log.d(TAG, "response: " + result);
                                 if (null != ocrResult) {
                                     ocrResult.onResult(result);
+                                    isScanning = false;
                                 }
-                                isScanning = false;
                             } else {
                                 isScanning = false;
                             }

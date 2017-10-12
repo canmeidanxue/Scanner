@@ -1,11 +1,14 @@
 package ocrtest;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import java.io.File;
+
 /**
- * Created by Sikang on 2017/6/5.
+ * Created by blue_sky on 2017/09/25.
  */
 
 public class OcrUtil {
@@ -17,6 +20,7 @@ public class OcrUtil {
     static final String ENGLISH_LANGUAGE = "eng";
     //识别语言简体中文
     static final String CHINESE_LANGUAGE = "chi_sim";
+    private static final String DATA_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
 
     private OcrUtil() {
     }
@@ -34,7 +38,7 @@ public class OcrUtil {
             public void run() {
                 TessBaseAPI baseApi = new TessBaseAPI();
                 //初始化OCR的字体数据，TESSBASE_PATH为路径，ENGLISH_LANGUAGE指明要用的字体库（不用加后缀）
-                if (baseApi.init(TESSBASE_PATH, ENGLISH_LANGUAGE)) {
+                if (baseApi.init(DATA_PATH, ENGLISH_LANGUAGE)) {
                     //设置识别模式
                     baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO);
                     //设置要识别的图片

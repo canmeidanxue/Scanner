@@ -11,6 +11,7 @@
         android:id="@+id/btn_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="扫描" />
     <Button
         android:layout_below="@id/btn_scan"
@@ -19,17 +20,11 @@
         android:layout_height="wrap_content"
         android:text="识别" />
     <Button
-        android:id="@+id/btn_test"
+        android:id="@+id/btn_new_scan"
         android:layout_below="@id/btn_recognise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="测试" />
-    <Button
-        android:id="@+id/btn_new_scan"
-        android:layout_below="@id/btn_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="可设置" />
+        android:text="扫描" />
     <Button
         android:id="@+id/btn_baidu_recognise"
         android:layout_below="@id/btn_new_scan"

@@ -14,14 +14,9 @@
     <RelativeLayout
         android:layout_width="@dimen/x160"
         android:layout_height="@dimen/x50"
-        android:layout_centerInParent="true"
-        android:background="@mipmap/kkk">
-
-        <View
-            android:id="@+id/xian"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@mipmap/xian" />
+        android:background="@mipmap/kkk"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
     </RelativeLayout>
 
     <!--显示被裁切出的图片，需要setTag到CameraView中，详见上面CameraView代码-->
