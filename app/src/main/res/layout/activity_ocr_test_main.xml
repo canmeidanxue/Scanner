@@ -24,7 +24,11 @@
         android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/tv_show_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:text="Hello-Welcome"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x160"

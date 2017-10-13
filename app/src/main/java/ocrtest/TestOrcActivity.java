@@ -1,12 +1,11 @@
 package ocrtest;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -35,7 +34,7 @@ public class TestOrcActivity extends AppCompatActivity {
      * TessBaseAPI初始化测第二个参数，就是识别库的名字不要后缀名。
      * 'chi_sim'================================'eng'
      */
-    private static final String DEFAULT_LANGUAGE = "chi_sim";
+    private static final String DEFAULT_LANGUAGE = "eng";
     /**
      * assets中的文件名
      */
@@ -48,15 +47,7 @@ public class TestOrcActivity extends AppCompatActivity {
     ImageView mImageView;
     TextView tv_show_text;
     public static String RESULT_KEY = "result";
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 0) {
-                tv_show_text.setText((String) msg.obj);
-            }
-        }
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +55,8 @@ public class TestOrcActivity extends AppCompatActivity {
         mCameraView = (CameraView) findViewById(R.id.main_camera);
         mImageView = (ImageView) findViewById(R.id.main_image);
         tv_show_text = (TextView) findViewById(R.id.tv_show_text);
-        mCameraView.setTag(R.id.tag_img,mImageView);
-        mCameraView.setTag(R.id.tag_text,tv_show_text);
+        mCameraView.setTag(R.id.tag_img, mImageView);
+        mCameraView.setTag(R.id.tag_text, tv_show_text);
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -78,10 +69,6 @@ public class TestOrcActivity extends AppCompatActivity {
             @Override
             public void onResult(String result) {
                 if (!TextUtils.isEmpty(result)) {
-//                    Intent intent = new Intent();
-//                    intent.putExtra(RESULT_KEY, result);
-//                    setResult(RESUL_OK, intent);
-//                    finish();
                     String reg = "[^0-9a-zA-Z.，()“”、：；\\u4e00-\\u9fa5]";
                     int totalLen = result.length();
                     result = result.replaceAll(reg, "");
@@ -89,15 +76,26 @@ public class TestOrcActivity extends AppCompatActivity {
                     int validLen = result.length();
                     double ratio = (double) validLen / totalLen;
                     if (ratio > 0.6) {
-                        Message message = handler.obtainMessage();
-                        message.what = 0;
-                        message.obj = result;
-                        handler.sendMessage(message);
+                        showResult(result);
                     }
                 }
             }
         });
 
+    }
+
+    /**
+     * 主线程更新UI
+     *
+     * @param mContext
+     */
+    private void showResult(final String mContext) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv_show_text.setText(mContext);
+            }
+        });
     }
 
     /**

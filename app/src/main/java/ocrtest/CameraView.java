@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.scannerdemo.R;
 
@@ -109,13 +108,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                         return;
                     //将裁切的图片显示出来（测试用，需要为CameraView  setTag（ImageView））
                     ImageView imageView = (ImageView) getTag(R.id.tag_img);
-                    final TextView textView = (TextView) getTag(R.id.tag_text);
                     stream.close();
                     //灰度处理
-//                    bmp = ImageFilter.grayScale(bmp);
+                    bmp = ImageFilter.grayScale(bmp);
+                    imageView.setImageBitmap(bmp);
 //                    //二值化处理
 //                    bmp = ImageFilter.binaryzation(bmp);
-                    imageView.setImageBitmap(bmp);
                     //开始识别
 //                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
 //                        @Override
@@ -129,7 +127,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 //                                isScanning = false;
 //                        }
 //                    });
-                    OcrUtil.scanChinese(bmp, new MyCallBack() {
+                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
                         @Override
                         public void response(String result) {
                             if (!TextUtils.isEmpty(result)) {

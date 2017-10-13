@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.ocr.sdk.OCR;
@@ -16,17 +17,22 @@ import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.ui.camera.CameraActivity;
 import com.example.administrator.scannerdemo.R;
 
+/**
+ * 百度识别
+ */
 public class BaiduRecogniseActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GENERAL = 105;
     private String AK = "PtuzCe2gHEtzoyWwZKtf5YLT";
     private String SK = "NFX2SfsfYlfTs2ChTW7y8rc4SRPLLG9E";
     private AlertDialog.Builder alertDialog;
+    private TextView tvShowContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baidu_recognise);
         alertDialog = new AlertDialog.Builder(this);
+        tvShowContext = (TextView) findViewById(R.id.tvShowContext);
         initAccessTokenWithAkSk();
 
     }
@@ -64,6 +70,15 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
         });
     }
 
+    private void showResultText(final String context) {
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvShowContext.setText(context);
+                }
+            });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -91,14 +106,14 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GENERAL && resultCode == Activity.RESULT_OK) {
             RecognizeService.recGeneral(FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath(),
                     new RecognizeService.ServiceListener() {
                         @Override
                         public void onResult(String result) {
-                            alertText("", result);
+                            showResultText(result);
                         }
                     });
         }

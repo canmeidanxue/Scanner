@@ -20,7 +20,7 @@ import com.baidu.ocr.sdk.model.WordSimple;
 import java.io.File;
 
 /**
- * Created by ruanshimin on 2017/4/20.
+ * Created by hsl on 2017/10/9.
  */
 
 public class RecognizeService {
