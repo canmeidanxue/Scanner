@@ -62,7 +62,7 @@ final class BeepManager implements MediaPlayer.OnErrorListener, Closeable {
             mediaPlayer = buildMediaPlayer(context);
         }
         // 振动
-        vibrate = false;
+        vibrate = true;
     }
 
     synchronized void playBeepSoundAndVibrate() {
