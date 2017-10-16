@@ -109,11 +109,11 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                     //将裁切的图片显示出来（测试用，需要为CameraView  setTag（ImageView））
                     ImageView imageView = (ImageView) getTag(R.id.tag_img);
                     stream.close();
-                    //灰度处理
+                    //线性灰度处理
                     bmp = ImageFilter.grayScale(bmp);
                     imageView.setImageBitmap(bmp);
 //                    //二值化处理
-//                    bmp = ImageFilter.binaryzation(bmp);
+                    bmp = ImageFilter.binaryzation(bmp);
                     //开始识别
 //                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
 //                        @Override

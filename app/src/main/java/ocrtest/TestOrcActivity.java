@@ -1,7 +1,6 @@
 package ocrtest;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,7 +46,6 @@ public class TestOrcActivity extends AppCompatActivity {
     ImageView mImageView;
     TextView tv_show_text;
     public static String RESULT_KEY = "result";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +67,7 @@ public class TestOrcActivity extends AppCompatActivity {
             @Override
             public void onResult(String result) {
                 if (!TextUtils.isEmpty(result)) {
+                    //匹配的数据
                     String reg = "[^0-9a-zA-Z.，()“”、：；\\u4e00-\\u9fa5]";
                     int totalLen = result.length();
                     result = result.replaceAll(reg, "");

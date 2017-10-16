@@ -23,6 +23,8 @@ public class MainActivity extends Activity implements OnScanerListener{
     private TextView tvShowResult;
     private int REQUEST_CODE = 0x001;
     private int REQUEST_BAIDU_CODE = 0x002;
+    private int ENGLISH_FLAG = 0;
+    private int CHINESE_FLAG = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

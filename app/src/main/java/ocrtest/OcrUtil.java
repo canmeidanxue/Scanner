@@ -36,20 +36,19 @@ public class OcrUtil {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                TessBaseAPI baseApi = new TessBaseAPI();
-                //初始化OCR的字体数据，TESSBASE_PATH为路径，ENGLISH_LANGUAGE指明要用的字体库（不用加后缀）
-                if (baseApi.init(DATA_PATH, ENGLISH_LANGUAGE)) {
-                    //设置识别模式
-                    baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO);
-                    //设置要识别的图片
-                    baseApi.setImage(bmp);
-                    //开始识别
-                    String result = baseApi.getUTF8Text();
-                    baseApi.clear();
-                    baseApi.end();
-                    callBack.response(result);
-                }
-
+                    TessBaseAPI baseApi = new TessBaseAPI();
+                    //初始化OCR的字体数据，TESSBASE_PATH为路径，ENGLISH_LANGUAGE指明要用的字体库（不用加后缀）
+                    if (baseApi.init(DATA_PATH, ENGLISH_LANGUAGE)) {
+                        //设置识别模式
+                        baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO);
+                        //设置要识别的图片
+                        baseApi.setImage(bmp);
+                        //开始识别
+                        String result = baseApi.getUTF8Text();
+                        baseApi.clear();
+                        baseApi.end();
+                        callBack.response(result);
+                    }
             }
         }).start();
     }
