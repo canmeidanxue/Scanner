@@ -29,6 +29,10 @@ import ocrtest.TestOrcActivity;
 import ocrtest.baidu.BaiduRecogniseActivity;
 import tools.MyPermissionsTool;
 
+/**
+ * @author hsl
+ */
+@SuppressWarnings("AliDeprecation")
 public class MainActivity extends Activity implements OnScanerListener {
     private TextView tv_ma_show_result;
     private TextView tvShowResult;
