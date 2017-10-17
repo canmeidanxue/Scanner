@@ -1,1 +1,1 @@
-include ':app', ':scanlibrary', 'zxing', ":tess-two",'zxingscanlibrary','ocr_ui'
+include ':app', ':scanlibrary', ':tess-two', 'zxing', 'zxingscanlibrary', 'ocr_ui'

@@ -15,13 +15,19 @@
         android:text="扫描" />
     <Button
         android:layout_below="@id/btn_scan"
-        android:id="@+id/btn_recognise"
+        android:id="@+id/btn_recognise_chi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="识别" />
+        android:text="中文识别" />
+    <Button
+        android:layout_below="@id/btn_recognise_chi"
+        android:id="@+id/btn_recognise_eng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="英文识别" />
     <Button
         android:id="@+id/btn_new_scan"
-        android:layout_below="@id/btn_recognise"
+        android:layout_below="@id/btn_recognise_eng"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="扫描" />

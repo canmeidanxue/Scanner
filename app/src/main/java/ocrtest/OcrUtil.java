@@ -7,14 +7,15 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
 
+
 /**
- * Created by blue_sky on 2017/09/25.
+ * @author hsl
+ * @date 2017/09/25.
  */
 
 public class OcrUtil {
     //字体库路径，必须包含tesseract文件夹
    //===== /storage/emulated/0/Download/tesseract/
-//    static final String TESSBASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Download" + File.separator;
     static final String TESSBASE_PATH = "mnt/sdcard/tesseract";
     //识别语言英文
     static final String ENGLISH_LANGUAGE = "eng";
@@ -32,7 +33,7 @@ public class OcrUtil {
      * @param bmp      需要识别的图片
      * @param callBack 结果回调（携带一个String 参数即可）
      */
-    public static void  ScanEnglish(final Bitmap bmp, final MyCallBack callBack) {
+    public static void  scanEnglish(final Bitmap bmp, final MyCallBack callBack) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -53,12 +54,18 @@ public class OcrUtil {
         }).start();
     }
 
-    public static void scanChinese(final Bitmap bitmap, final MyCallBack myCallBack){
+    public static void scanRecognise(final Bitmap bitmap, final boolean engLanguage, final MyCallBack myCallBack){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 TessBaseAPI tessBaseAPI = new TessBaseAPI();
-                if (tessBaseAPI.init(TESSBASE_PATH,CHINESE_LANGUAGE)) {
+                boolean isSuccess = false;
+                if (engLanguage) {
+                    isSuccess = tessBaseAPI.init(DATA_PATH,ENGLISH_LANGUAGE);
+                }else {
+                    isSuccess = tessBaseAPI.init(DATA_PATH,CHINESE_LANGUAGE);
+                }
+                if (isSuccess) {
                     tessBaseAPI.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO);
                     tessBaseAPI.setImage(bitmap);
                     String scanResult = tessBaseAPI.getUTF8Text();

@@ -20,11 +20,14 @@ import com.example.administrator.scannerdemo.R;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
- * update by hsl on 2017-9-29 09:58:34
+ * @author hsl
+ * @date 2017/9/29
  */
 
+@SuppressWarnings("deprecation")
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
     private final String TAG = "CameraView";
     private SurfaceHolder mHolder;
@@ -37,7 +40,8 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     private int frameRate = 30;
     //结果回调
     private OcrResult ocrResult;
-
+    private static final Pattern COMMA_PATTERN = Pattern.compile(",");
+    private int TEN_DESIRED_ZOOM = 10;
     public CameraView(Context context) {
         super(context);
         init();
@@ -69,8 +73,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         //设置Camera基本参数
-        if (mCamera != null)
+        if (mCamera != null){
             initCameraParams();
+        }
     }
 
     @Override
@@ -104,8 +109,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                     bmp = rotateToDegrees(bmp, 90);
                     //然后裁切出需要的区域，具体区域要和UI布局中配合，这里取图片正中间，宽度取图片的一半，高度这里用的适配数据，可以自定义
                     bmp = bitmapCrop(bmp, bmp.getWidth() / 2 - (int) getResources().getDimension(R.dimen.x160) / 2, bmp.getHeight() / 2 - (int) getResources().getDimension(R.dimen.x50) / 2, (int) getResources().getDimension(R.dimen.x160), (int) getResources().getDimension(R.dimen.x50));
-                    if (bmp == null)
+                    if (bmp == null){
                         return;
+                    }
                     //将裁切的图片显示出来（测试用，需要为CameraView  setTag（ImageView））
                     ImageView imageView = (ImageView) getTag(R.id.tag_img);
                     stream.close();
@@ -127,7 +133,8 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 //                                isScanning = false;
 //                        }
 //                    });
-                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
+                    Log.d(TAG, "onCreate: ======================="+Constants.engLanguage);
+                    OcrUtil.scanRecognise(bmp,Constants.engLanguage, new MyCallBack() {
                         @Override
                         public void response(String result) {
                             if (!TextUtils.isEmpty(result)) {
@@ -204,11 +211,10 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
         }
         camParams.setPreviewSize(imageWidth, imageHeight);
 //        camParams.setPictureSize(imageWidth, imageHeight);
-//        Log.v(TAG, "Setting imageWidth: " + imageWidth + " imageHeight: " + imageHeight + " frameRate: " + frameRate);
 
         camParams.setPreviewFrameRate(frameRate);
-//        Log.v(TAG, "Preview Framerate: " + camParams.getPreviewFrameRate());
 
+        setZoom(camParams);
         mCamera.setParameters(camParams);
         //取到的图像默认是横向的，这里旋转90度，保持和预览画面相同
         mCamera.setDisplayOrientation(90);
@@ -266,11 +272,13 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
      * 摄像头自动聚焦
      */
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
+        @Override
         public void onAutoFocus(boolean success, Camera camera) {
             postDelayed(doAutoFocus, 1000);
         }
     };
     private Runnable doAutoFocus = new Runnable() {
+        @Override
         public void run() {
             if (mCamera != null) {
                 try {
@@ -295,5 +303,97 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     }
     public void setOcrResult(OcrResult result){
         this.ocrResult = result;
+    }
+
+    /**
+     * 设置相机放大倍数
+     * @param parameters
+     */
+    private void setZoom(Camera.Parameters parameters) {
+
+        String zoomSupportedString = parameters.get("zoom-supported");
+        if (zoomSupportedString != null && !Boolean.parseBoolean(zoomSupportedString)) {
+            return;
+        }
+
+        int tenDesiredZoom = TEN_DESIRED_ZOOM;
+
+        String maxZoomString = parameters.get("max-zoom");
+        if (maxZoomString != null) {
+            try {
+                int tenMaxZoom = (int) (10.0 * Double.parseDouble(maxZoomString));
+                if (tenDesiredZoom > tenMaxZoom) {
+                    tenDesiredZoom = tenMaxZoom;
+                }
+            } catch (NumberFormatException nfe) {
+                Log.w(TAG, "Bad max-zoom: " + maxZoomString);
+            }
+        }
+
+        String takingPictureZoomMaxString = parameters.get("taking-picture-zoom-max");
+        if (takingPictureZoomMaxString != null) {
+            try {
+                int tenMaxZoom = Integer.parseInt(takingPictureZoomMaxString);
+                if (tenDesiredZoom > tenMaxZoom) {
+                    tenDesiredZoom = tenMaxZoom;
+                }
+            } catch (NumberFormatException nfe) {
+                Log.w(TAG, "Bad taking-picture-zoom-max: " + takingPictureZoomMaxString);
+            }
+        }
+
+        String motZoomValuesString = parameters.get("mot-zoom-values");
+        if (motZoomValuesString != null) {
+            tenDesiredZoom = findBestMotZoomValue(motZoomValuesString, tenDesiredZoom);
+        }
+
+        String motZoomStepString = parameters.get("mot-zoom-step");
+        if (motZoomStepString != null) {
+            try {
+                double motZoomStep = Double.parseDouble(motZoomStepString.trim());
+                int tenZoomStep = (int) (10.0 * motZoomStep);
+                if (tenZoomStep > 1) {
+                    tenDesiredZoom -= tenDesiredZoom % tenZoomStep;
+                }
+            } catch (NumberFormatException nfe) {
+                // continue
+            }
+        }
+
+        // Set zoom. This helps encourage the user to pull back.
+        // Some devices like the Behold have a zoom parameter
+        if (maxZoomString != null || motZoomValuesString != null) {
+            parameters.set("zoom", String.valueOf(tenDesiredZoom / 10.0));
+        }
+
+        // Most devices, like the Hero, appear to expose this zoom parameter.
+        // It takes on values like "27" which appears to mean 2.7x zoom
+        if (takingPictureZoomMaxString != null) {
+            parameters.set("taking-picture-zoom", tenDesiredZoom);
+        }
+    }
+
+    /**
+     * 获取最好的焦点
+     * @param stringValues
+     * @param tenDesiredZoom
+     * @return
+     */
+    private static int findBestMotZoomValue(CharSequence stringValues, int tenDesiredZoom) {
+        int tenBestValue = 0;
+        for (String stringValue : COMMA_PATTERN.split(stringValues)) {
+            stringValue = stringValue.trim();
+            double value;
+            try {
+                value = Double.parseDouble(stringValue);
+            } catch (NumberFormatException nfe) {
+                return tenDesiredZoom;
+            }
+            int tenValue = (int) (10.0 * value);
+            if (Math.abs(tenDesiredZoom - value) < Math.abs(tenDesiredZoom - tenBestValue)) {
+                tenBestValue = tenValue;
+            }
+        }
+        return tenBestValue;
     }
 }
