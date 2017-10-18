@@ -27,7 +27,8 @@
 
         <activity android:name="ocrtest.TestOrcActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="ocrtest.baidu.BaiduRecogniseActivity"></activity>
+        <activity android:name="ocrtest.baidu.BaiduRecogniseActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -120,19 +120,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                     imageView.setImageBitmap(bmp);
 //                    //二值化处理
                     bmp = ImageFilter.binaryzation(bmp);
-                    //开始识别
-//                    OcrUtil.ScanEnglish(bmp, new MyCallBack() {
-//                        @Override
-//                        public void response(String result) {
-//                            //这是区域内扫除的所有内容
-//                            if (!TextUtils.isEmpty(result)) {
-//                                Log.d("scantest", "扫描结果：  " + result);
-//                                ocrResult.onResult(result);
-//                                isScanning=true;
-//                            } else
-//                                isScanning = false;
-//                        }
-//                    });
                     Log.d(TAG, "onCreate: ======================="+Constants.engLanguage);
                     OcrUtil.scanRecognise(bmp,Constants.engLanguage, new MyCallBack() {
                         @Override

@@ -121,7 +121,7 @@ bool IsUTF8(const void* pBuffer, long size)
 }
 
 
-extern "C" jstring Java_com_duoyi_qrdecode_DecodeEntry_decodeFromJNI(JNIEnv *env, jobject thiz,
+extern "C" jstring Java_com_bulesky_zxinglibrary_decode_DecodeEntry_decodeFromJNI(JNIEnv *env, jobject thiz,
                                                                      jint decodeCode,
                                                                      jbyteArray data,
                                                                      jint dataWidth,
@@ -165,7 +165,7 @@ extern "C" jstring Java_com_duoyi_qrdecode_DecodeEntry_decodeFromJNI(JNIEnv *env
 
 }
 
-extern "C" jstring Java_com_duoyi_qrdecode_DecodeEntry_decodeFileFromJNI(JNIEnv *env, jobject thiz,
+extern "C" jstring Java_com_bulesky_zxinglibrary_decode_DecodeEntry_decodeFileFromJNI(JNIEnv *env, jobject thiz,
                                                                          jint decodeCode,
                                                                          jintArray pixels,
                                                                          jint width, int height) {

@@ -1,6 +1,7 @@
 package ocrtest.baidu;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
     private String SK = "NFX2SfsfYlfTs2ChTW7y8rc4SRPLLG9E";
     private AlertDialog.Builder alertDialog;
     private TextView tvShowContext;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
         alertDialog = new AlertDialog.Builder(this);
         tvShowContext = (TextView) findViewById(R.id.tvShowContext);
         initAccessTokenWithAkSk();
+        mProgressDialog = ProgressDialog.show(this,null,"初始化....");
 
     }
 
@@ -42,6 +45,7 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
             @Override
             public void onResult(AccessToken result) {
                 String token = result.getAccessToken();
+                mProgressDialog.dismiss();
                 Intent intent = new Intent(BaiduRecogniseActivity.this, CameraActivity.class);
                 intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
                         FileUtil.getSaveFile(getApplication()).getAbsolutePath());
@@ -109,10 +113,12 @@ public class BaiduRecogniseActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GENERAL && resultCode == Activity.RESULT_OK) {
+            mProgressDialog = ProgressDialog.show(this,null,"正在识别....");
             RecognizeService.recGeneral(FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath(),
                     new RecognizeService.ServiceListener() {
                         @Override
                         public void onResult(String result) {
+                            mProgressDialog.dismiss();
                             showResultText(result);
                         }
                     });

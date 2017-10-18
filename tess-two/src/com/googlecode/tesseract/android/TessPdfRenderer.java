@@ -35,7 +35,7 @@ public class TessPdfRenderer {
 
     private boolean mRecycled;
 
-    /**
+     /**
      * Constructs an instance of a Tesseract PDF renderer.
      * 
      * When the instance of TessPdfRenderer is no longer needed, its 

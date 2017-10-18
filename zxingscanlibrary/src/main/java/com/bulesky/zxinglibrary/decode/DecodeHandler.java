@@ -25,8 +25,6 @@ import android.text.TextUtils;
 
 import com.bulesky.zxinglibrary.camera.CameraManager;
 import com.bulesky.zxinglibrary.common.Tool;
-import com.duoyi.qrdecode.BarcodeFormat;
-import com.duoyi.qrdecode.DecodeEntry;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
 
