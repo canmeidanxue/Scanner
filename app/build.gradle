@@ -30,8 +30,7 @@ dependencies {
     //    testCompile 'junit:junit:4.12'
     compile project(':tess-two')
 //    compile 'com.rmtheis:tess-two:8.0.0'
-    compile project(':scanlibrary')
-    //    compile project(':zxingscanner')
+//    compile project(':scanlibrary')
     compile project(':zxingscanlibrary')
     compile files('libs/ocr-sdk.jar')
     compile project(':ocr_ui')

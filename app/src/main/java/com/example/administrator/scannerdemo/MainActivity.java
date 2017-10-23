@@ -14,8 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bulesky.zxinglibrary.activity.ScannerActivity;
-import com.google.zxing.Result;
+import com.administrator.zxinglibrary.activity.ScannerActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,17 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import activity.ScanerCodeActivity;
-import interfaces.OnScanerListener;
 import ocrtest.TestOrcActivity;
 import ocrtest.baidu.BaiduRecogniseActivity;
-import tools.MyPermissionsTool;
 
 /**
  * @author hsl
  */
 @SuppressWarnings("AliDeprecation")
-public class MainActivity extends Activity implements OnScanerListener {
+public class MainActivity extends Activity {
     private TextView tv_ma_show_result;
     private TextView tvShowResult;
     private int REQUEST_CODE = 0x001;
@@ -78,13 +74,13 @@ public class MainActivity extends Activity implements OnScanerListener {
         makeFile();
         tv_ma_show_result = findViewById(R.id.tv_ma_show_result);
         tvShowResult = findViewById(R.id.tvShowResult);
-        findViewById(R.id.btn_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ScanerCodeActivity.setScanerListener(MainActivity.this);
-                startActivity(new Intent(MainActivity.this, ScanerCodeActivity.class));
-            }
-        });
+//        findViewById(R.id.btn_scan).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ScanerCodeActivity.setScanerListener(MainActivity.this);
+//                startActivity(new Intent(MainActivity.this, ScanerCodeActivity.class));
+//            }
+//        });
         findViewById(R.id.btn_recognise_chi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,15 +131,6 @@ public class MainActivity extends Activity implements OnScanerListener {
             }).start();
     }
 
-    @Override
-    public void onSuccess(String type, Result result) {
-        tv_ma_show_result.setText(type + result);
-    }
-
-    @Override
-    public void onFail(String type, String message) {
-        tv_ma_show_result.setText(type + message);
-    }
     /**
      * 请求到权限后在这里复制识别库
      *

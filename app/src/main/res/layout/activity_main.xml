@@ -46,12 +46,6 @@
         android:layout_below="@id/btn_scan"
         android:gravity="center" />
 
-    <view.ScanBoxView
-        android:id="@+id/sbv_ma_scan"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tv_ma_show_result" />
     <TextView
         android:id="@+id/tvShowResult"
         android:layout_alignParentBottom="true"

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bulesky.zxinglibrary">
-
+    package="com.administrator.zxinglibrary">
+    <!-- 许可振动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application>
-        <activity android:name=".activity.ScannerActivity"/>
-        <activity android:name=".album.PictureListActivity"/>
-        <activity android:name=".album.PictureTotalActivity"/>
+        <activity android:name="com.administrator.zxinglibrary.activity.ScannerActivity"/>
+        <activity android:name="com.administrator.zxinglibrary.album.PictureListActivity"/>
+        <activity android:name="com.administrator.zxinglibrary.album.PictureTotalActivity"/>
     </application>
 
 </manifest>

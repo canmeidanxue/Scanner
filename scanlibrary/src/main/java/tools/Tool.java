@@ -134,6 +134,7 @@ public class Tool {
      * @param path
      * @param listener
      */
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public static void parsePhoto(final String path, final OnDecodeListener listener) {
         new AsyncTask<String, Integer, String>() {
             @Override
